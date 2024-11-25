@@ -1,67 +1,74 @@
+![Feature Selection Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-1-1.jpg)
+
 # Experiment Attempts and Results
 
-This repository documents various attempts to predict Spanish bilingualism from brainwave data using machine learning models. A detailed description of the final results and methodology is visualized in the PDF slides stored in the `images` folder.
+This repository documents efforts to predict Spanish bilingualism using brainwave data collected from EEG measurements. The project combines exploratory data analysis, feature engineering, and machine learning to develop a predictive model. 
+
+## Project Background
+This dataset consists of event-related potentials (ERPs) extracted from EEG recordings of 40 participants during a language processing study. Participants were exposed to carefully constructed word pair stimuli across four languages: English, Spanish, French, and German. The study aimed to elicit distinct ERP patterns, such as the N400, which are linked to semantic processing, to assess language proficiency.
+
+Key objectives:
+- **Primary Goal**: Predict Spanish bilingualism using ERP features.
+- **Bonus Objectives**: Extend predictions to German or French bilingualism or bilingualism in general.
+- **Model Trust**: Emphasize explainability, performance evaluation, and feature relevance.
 
 ## Overview of Attempts
 
 ### 1. **Data Preprocessing**
-- **StandardScaler**: Standardized features by removing the mean and scaling to unit variance.
-- **SMOTE (Synthetic Minority Oversampling Technique)**: Addressed class imbalance by generating synthetic samples for the minority class.
+- **StandardScaler**: Standardized features to have a mean of zero and unit variance, essential for models sensitive to feature scaling.
+- **SMOTE**: Addressed class imbalance by oversampling the minority class (Spanish bilinguals) with synthetic examples.
+
+![Data Preprocessing Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-3-1.jpg)
 
 ### 2. **Feature Selection**
-- **PCA (Principal Component Analysis)**: Reduced dimensionality while retaining the most important information.
-- **Recursive Feature Elimination (RFE)**: Iteratively removed less important features to enhance model performance.
+- **PCA (Principal Component Analysis)**: Reduced high-dimensional EEG data to principal components while preserving the variance.
+- **Recursive Feature Elimination (RFE)**: Iteratively removed irrelevant features to optimize model performance.
 
-![Exploratory Data Analysis Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-3.pdf)
+![Feature Selection Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-4-1.jpg)
 
 ### 3. **Exploratory Data Analysis**
-#### **Time Chunks**: 
-- Divided brainwave data into pre-stimulus and event-related potential (ERP) components to analyze changes over time.
-- Focused on minimum and maximum responses in specific time chunks.
+#### **Time Chunks**:
+- Segmented ERPs into pre-stimulus and ERP component time windows (e.g., N400, P200).
+- Analyzed the minimum and maximum amplitudes to capture meaningful variations in brainwave responses.
 
-![Time Chunks Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-4.pdf)
+![Time Chunks Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-5-1.jpg)
 
 #### **Prime & Target Words**:
-- Evaluated brain responses to translations and unrelated primes to identify distinctions in bilingual understanding.
+- Focused on the relationships between primes and targets (e.g., translations, repetitions, unrelated).
+- Expected significant ERP differences in bilingual participants for semantically related pairs.
 
-![Prime & Target Words Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-5.pdf)
+![Prime & Target Words Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-6-1.jpg)
 
 ### 4. **Model Testing**
-#### **Random Forest**:
-- Provided a simple, interpretable baseline but lacked nuanced temporal and spatial data handling.
-#### **1D Convolutional Neural Network (CNN)**:
-- Handled temporal and spatial data effectively but suffered from lower recall and F1 scores.
-#### **XGBoost**:
-- **Final Model**: Chosen for its ability to capture nonlinear patterns and robustness to incomplete data.
-- **Performance Metrics**:
-  - **Accuracy**: 80.24%
-  - **Precision (Spanish Speaking)**: 0.78
-  - **Recall (Spanish Speaking)**: 0.84
-  - **F1-Score (Spanish Speaking)**: 0.81
+#### Models Explored:
+- **Random Forest**: Provided an interpretable baseline but lacked the ability to fully utilize temporal and spatial data.
+- **1D Convolutional Neural Network (CNN)**: Better at capturing temporal and spatial features but had lower recall and F1 scores for bilingual predictions.
+- **XGBoost**: Chosen for its ability to handle nonlinear patterns effectively and its robustness to incomplete data.
 
-![Model Testing Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-6.pdf)
+**Final Model Performance**:
+- **Accuracy**: 80.24%
+- **Precision (Spanish Speaking)**: 0.78
+- **Recall (Spanish Speaking)**: 0.84
+- **F1-Score (Spanish Speaking)**: 0.81
+
+![Model Testing Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-7-1.jpg)
 
 ### 5. **Hyperparameter Tuning**
-- Used **Randomized Search CV** for:
-  - `colsample_bytree`, `learning_rate`, `max_depth`, `min_child_weight`, `n_estimators`, `reg_alpha`, `reg_lambda`, `subsample`.
+- Used **Randomized Search CV** to optimize hyperparameters such as:
+  - `colsample_bytree`, `learning_rate`, `max_depth`, `min_child_weight`, `n_estimators`, `reg_alpha`, `reg_lambda`, and `subsample`.
 
-![Hyperparameter Tuning Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-7.pdf)
+![Hyperparameter Tuning Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-8-1.jpg)
 
 ### 6. **Top Feature Insights**
-- Example: Key ERP components like `n400_P4_max`, `n170_P4_min`, and `p600_P4_max` contributed heavily to predictions.
+- Key features included specific ERP components such as:
+  - `n400_P4_max`
+  - `p600_P4_min`
+  - `n170_Fz_max`
+- These features were highly correlated with bilingualism predictions, showcasing their importance in semantic and syntactic processing.
 
-![Feature Importance Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-8.pdf)
-
----
-
-## PDF Slides
-The full set of slides detailing the experiment can be found in the `images` folder:
-- `Sandia Data Challenge - Team 4-<page_number>.pdf`
-
-## How to Run the Notebook
-1. Clone the repository.
-2. Install dependencies listed in `requirements.txt`.
-3. Run the notebook step by step to replicate the experiments.
-4. Refer to the slide images in the `images` folder for detailed insights into the results and methodology.
+![Feature Importance Slide](images/Sandia%20Data%20Challenge%20-%20Team%204-9-1.jpg)
 
 ---
+
+## Conclusion
+This project demonstrated the potential of EEG data in predicting language proficiency, particularly Spanish bilingualism. By leveraging ERP components and advanced machine learning techniques, we developed a model with high predictive accuracy and interpretability.
